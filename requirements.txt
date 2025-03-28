@@ -1,0 +1,6 @@
+alembic==1.15.1
+asyncpg==0.30.0
+fastapi[standard]==0.115.12
+pydantic-settings==2.8.1
+SQLAlchemy==2.0.40
+sqlmodel==0.0.24
