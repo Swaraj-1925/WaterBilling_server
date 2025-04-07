@@ -84,7 +84,7 @@ async def take_meter_reading(
             logger.warning("Meter reader not found")
             return APIResponse.error(message="meter reader dont Exist", status_code=status.HTTP_404_NOT_FOUND)
         today = date.today().isoformat()
-        blob_path = f"{meter_reader.get("phone")}/{phone}/{today}.png"
+        blob_path = f"{meter_reader.get('phone')}/{phone}/{today}.png"
         file_content = await image.read()
         meter_url= await upload_blob(blob_path=blob_path, img_bytes=file_content)
 
