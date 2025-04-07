@@ -69,8 +69,6 @@ async def meter_reader_login(meter_reader_data: Signin, db: Session = Depends(ge
 @meter_reader_router.post("/take_meter_reading",description="Upload an image and it will mark the reading accordingly")
 async def take_meter_reading(
         phone: str = Form(...),
-        reading: int = Form(...),
-        modified: bool = Form(...),
         meter_reader=Depends(get_token_data),
         image: UploadFile = File(..., description="Image of the meter reading"),
         db: Session = Depends(get_session)
