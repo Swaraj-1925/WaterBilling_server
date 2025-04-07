@@ -70,14 +70,15 @@ async def customer_login(customer_data: Signin, db: Session = Depends(get_sessio
 @customer_router.get("/get_bill",description="Get Bills")
 async def get_bill(all_result:bool = Query(default=False, description="Return all response"), customer=Depends(get_token_data), db: Session = Depends(get_session)):
     try:
-        query = select(Bills).where(Bills.phone == customer.phone).order_by(Bills.id.desc())
+        logger.debug(customer)
+        query = select(Bills).where(Bills.phone == customer.get("phone")).order_by(Bills.id.desc())
         result = await db.exec(query)
 
         bills = result.all() if all_result else result.first()
         if all_result:
-            last_bill = db.exec(query).all()
+            last_bill =(await db.exec(query)).all()
         else:
-            last_bill = db.exec(query).first()
+            last_bill =(await  db.exec(query)).first()
         if not last_bill:
             return APIResponse.error(message="No bills found for this customer", status_code=status.HTTP_404_NOT_FOUND)
         return APIResponse.success(last_bill)

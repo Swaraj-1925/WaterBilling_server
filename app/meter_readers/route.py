@@ -68,13 +68,15 @@ async def meter_reader_login(meter_reader_data: Signin, db: Session = Depends(ge
 
 @meter_reader_router.post("/take_meter_reading",description="Upload an image and it will mark the reading accordingly")
 async def take_meter_reading(
-        bill_data: CalculateBill,
+        phone: str = Form(...),
+        reading: int = Form(...),
+        modified: bool = Form(...),
         meter_reader=Depends(get_token_data),
         image: UploadFile = File(..., description="Image of the meter reading"),
         db: Session = Depends(get_session)
 ):
     try:
-        query = select(MeterReader).where(MeterReader.phone == meter_reader.phone)
+        query = select(MeterReader).where(MeterReader.phone == meter_reader.get("phone"))
         result = await db.exec(query)
         existing = result.first()
 
@@ -82,7 +84,7 @@ async def take_meter_reading(
             logger.warning("Meter reader not found")
             return APIResponse.error(message="meter reader dont Exist", status_code=status.HTTP_404_NOT_FOUND)
         today = date.today().isoformat()
-        blob_path = f"{meter_reader.phone}/{bill_data.phone}/{today}.png"
+        blob_path = f"{meter_reader.get("phone")}/{phone}/{today}.png"
         file_content = await image.read()
         meter_url= await upload_blob(blob_path=blob_path, img_bytes=file_content)
 

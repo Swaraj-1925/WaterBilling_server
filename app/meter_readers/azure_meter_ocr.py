@@ -9,6 +9,7 @@ from utils.logger import logger
 
 async def meter_ocr(meter_url):
     try:
+        logger.info(f"getting meter data")
         if not END_POINT or not API_KEY:
             logger.critical("Please set environment variables API_KEY and END_POINT")
             raise ValueError("Please set environment variables API_KEY and END_POINT")

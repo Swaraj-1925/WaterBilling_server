@@ -20,6 +20,7 @@ class MeterReaderSignup(BaseModel):
     email: str
     phone: str
     password: str
+    address: str
 
 class CalculateBill(BaseModel):
     phone: str
