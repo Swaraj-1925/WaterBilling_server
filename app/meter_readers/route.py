@@ -34,8 +34,8 @@ async  def meter_reader_signup(meter_reader_data: MeterReaderSignup, db: Session
             address=meter_reader_data.address,
         )
         db.add(new_customer)
-        db.commit()
-        db.refresh(new_customer)
+        await db.commit()
+        await db.refresh(new_customer)
         token = create_access_token({"phone": new_customer.phone, "email": new_customer.email})
         return APIResponse.success({"token": token}, status.HTTP_201_CREATED)
     except Exception as e:
@@ -148,8 +148,8 @@ async def calculate_bill(
     )
 
     db.add(new_bill)
-    db.commit()
-    db.refresh(new_bill)
+    await db.commit()
+    await db.refresh(new_bill)
 
     return APIResponse.success(data=new_bill)
 

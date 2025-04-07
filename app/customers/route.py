@@ -35,8 +35,8 @@ async  def customer_signup(customer_data: CustomerSignup, db: Session = Depends(
             address=customer_data.address,
         )
         db.add(new_customer)
-        db.commit()
-        db.refresh(new_customer)
+        await db.commit()
+        await db.refresh(new_customer)
         token = create_access_token({"phone": new_customer.phone, "email": new_customer.email})
         return APIResponse.success({"token": token}, status.HTTP_201_CREATED)
     except Exception as e:
