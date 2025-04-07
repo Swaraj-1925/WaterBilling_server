@@ -19,7 +19,8 @@ async  def meter_reader_signup(meter_reader_data: MeterReaderSignup, db: Session
     try:
 
         query = select(MeterReader).where(MeterReader.phone == meter_reader_data.phone)
-        existing = db.exec(query).first()
+        result = await db.exec(query)
+        existing = result.first()
         if existing:
             logger.warning(f"Customer {existing.id} already exists")
             return APIResponse.error(message="Customer already exists", status_code=status.HTTP_409_CONFLICT)
@@ -47,7 +48,8 @@ async def meter_reader_login(meter_reader_data: Signin, db: Session = Depends(ge
     try:
 
         query = select(MeterReader).where(MeterReader.phone == meter_reader_data.phone)
-        existing= db.exec(query).first()
+        result = await db.exec(query)
+        existing = result.first()
         if not existing:
             logger.warning("Customer signup failed")
             return APIResponse.error(message="Customer dont Exist", status_code=status.HTTP_404_NOT_FOUND)
@@ -73,7 +75,9 @@ async def take_meter_reading(
 ):
     try:
         query = select(MeterReader).where(MeterReader.phone == meter_reader.phone)
-        existing = db.exec(query).first()
+        result = await db.exec(query)
+        existing = result.first()
+
         if not existing:
             logger.warning("Meter reader not found")
             return APIResponse.error(message="meter reader dont Exist", status_code=status.HTTP_404_NOT_FOUND)
@@ -100,7 +104,8 @@ async def calculate_bill(
         meter_reader = Depends(get_token_data),
 ):
     query = select(Customers).where(Customers.phone == bill_data.phone)
-    customer = db.exec(query).first()
+    customer_result = await db.exec(query)
+    customer = customer_result.first()
     if not customer:
         logger.warning("Customer not found")
         return APIResponse.error(message="Customer not found", status_code=404)

@@ -11,11 +11,11 @@ from app.meter_readers.route import meter_reader_router
 from app.customers.route import customer_router
 
 @asynccontextmanager
-async def init_db():
+async def lifespan(app: FastAPI):
     await create_db_and_tables()
     yield
     logger.info("Shutting down db")
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

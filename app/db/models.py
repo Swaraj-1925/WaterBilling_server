@@ -5,7 +5,7 @@ from sqlmodel import SQLModel, Field, Relationship
 
 class Customers(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    phone: int = Field(max_digits=10,nullable=False,unique=True)
+    phone: str = Field(nullable=False,unique=True)
     email: str
     name: str
     address: str
@@ -18,7 +18,7 @@ class MeterReader(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
     name: str
     email: str
-    phone: int = Field(max_digits=10,nullable=False,unique=True)
+    phone: str = Field(nullable=False,unique=True)
     hashed_password: str
 
     readings: List["Bills"] = Relationship(back_populates="reader")
@@ -26,7 +26,7 @@ class MeterReader(SQLModel, table=True):
 
 class Bills(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
-    phone: int = Field(foreign_key="customers.phone")
+    phone: str = Field(foreign_key="customers.phone")
     reader_id: int = Field(foreign_key="meterreader.id")
     image_url: str
 

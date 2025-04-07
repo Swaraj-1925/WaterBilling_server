@@ -5,14 +5,14 @@ from sqlmodel import SQLModel
 
 
 class CustomerSignup(BaseModel):
-    phone: int
+    phone: str
     email: Optional[str]
     name: str
     address: str
     password: str
 
 class Signin(BaseModel):
-    phone: int
+    phone: str
     password: str
 
 class MeterReaderSignup(BaseModel):
@@ -22,7 +22,7 @@ class MeterReaderSignup(BaseModel):
     password: str
 
 class CalculateBill(BaseModel):
-    phone: int
+    phone: str
     reading: int
     image_url: str
     modified: bool
