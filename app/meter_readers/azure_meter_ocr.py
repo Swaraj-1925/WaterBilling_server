@@ -26,11 +26,11 @@ async def meter_ocr(meter_url):
         if not result.read:
             logger.error("Wasn't able to extract reading from image")
         words =[]
-        for block in result.read.blocks:
-            for line in block:
-                for word in line:
-                    logger.info(f"appeding word: {word}")
-                    words.append(word)
+        logger.info(f"result read: {result.read}")
+        for read_result in result.read.read_results:
+            for line in read_result.lines:
+                logger.info(f"appending line: {line.text}")")
+                words.append(line.text)
 
         raw_reading = "".join(words)
         logger.info(f"Raw OCR output: {raw_reading}")
