@@ -29,6 +29,7 @@ async def meter_ocr(meter_url):
         for block in result.read.blocks:
             for line in block:
                 for word in line:
+                    logger.info(f"appeding word: {word}")
                     words.append(word)
 
         raw_reading = "".join(words)
