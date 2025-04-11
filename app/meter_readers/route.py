@@ -97,7 +97,7 @@ async def take_meter_reading(
         return APIResponse.error("Something went wrong with reading of meter reading")
 
 
-@meter_reader_router.get("/calculate_bill", description="Calculate Bills")
+@meter_reader_router.post("/calculate_bill", description="Calculate Bills")
 async def calculate_bill(
         bill_data: CalculateBill,
         db: Session = Depends(get_session),
