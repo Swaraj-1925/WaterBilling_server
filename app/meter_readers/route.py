@@ -139,7 +139,7 @@ async def calculate_bill(
     # Create new bill entry
     new_bill = Bills(
         phone=bill_data.phone,
-        reader_id=meter_reader.id,
+        reader_id=meter_reader["id"],
         image_url=bill_data.image_url,
         reading_value=bill_data.reading,
         reading_date=reading_date,
