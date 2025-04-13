@@ -137,6 +137,7 @@ async def calculate_bill(
     due_date = (current_date + timedelta(days=30)).strftime("%Y-%m-%d")  # Add 30 days
 
     # Create new bill entry
+    logger.warning(f"meter reader {meter_reader}")
     new_bill = Bills(
         phone=bill_data.phone,
         reader_id=meter_reader["id"],
