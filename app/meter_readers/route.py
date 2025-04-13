@@ -116,7 +116,7 @@ async def calculate_bill(
 
     # Check if a bill already exists for the current month
     last_bill_query = select(Bills).where(Bills.phone == bill_data.phone)
-    last_bill = db.exec(last_bill_query).first()
+    last_bill = await db.exec(last_bill_query).first()
 
     if last_bill:
         last_bill_date = datetime.strptime(last_bill.reading_date, "%Y-%m-%d").date()
