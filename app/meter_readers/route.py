@@ -170,4 +170,4 @@ def calculate_bill_amount(old_reading,new_reading):
     else:
         rate = 8
 
-    return int(kiloliters * rate)
+    return kiloliters * rate
