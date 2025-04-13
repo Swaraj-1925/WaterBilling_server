@@ -140,7 +140,7 @@ async def calculate_bill(
     logger.warning(f"meter reader {meter_reader}")
     new_bill = Bills(
         phone=bill_data.phone,
-        reader_id=meter_reader["id"],
+        reader_id=meter_reader["phone"],
         image_url=bill_data.image_url,
         reading_value=bill_data.reading,
         reading_date=reading_date,
