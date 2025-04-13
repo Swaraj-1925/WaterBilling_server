@@ -20,8 +20,8 @@ async def get_session()->AsyncGenerator[AsyncSession, None]:
 async def create_db_and_tables():
     try:
         async with engine.begin() as conn:
-            await conn.run_sync(SQLModel.metadata.drop_all)
-            logger.info("Drop all tables")
+            #await conn.run_sync(SQLModel.metadata.drop_all)
+            #logger.info("Drop all tables")
             await conn.run_sync(SQLModel.metadata.create_all)
             logger.info(f"DB created successfully")
     except Exception as e:
