@@ -97,7 +97,7 @@ async def take_meter_reading(
         return APIResponse.error("Something went wrong with reading of meter reading")
 
 
-@meter_reader_router.get("/calculate_bill", description="Calculate Bills")
+@meter_reader_router.post("/calculate_bill", description="Calculate Bills")
 async def calculate_bill(
         bill_data: CalculateBill,
         db: Session = Depends(get_session),
@@ -116,7 +116,8 @@ async def calculate_bill(
 
     # Check if a bill already exists for the current month
     last_bill_query = select(Bills).where(Bills.phone == bill_data.phone)
-    last_bill = db.exec(last_bill_query).first()
+    result = await db.exec(last_bill_query)
+    last_bill = result.first()
 
     if last_bill:
         last_bill_date = datetime.strptime(last_bill.reading_date, "%Y-%m-%d").date()
@@ -136,9 +137,11 @@ async def calculate_bill(
     due_date = (current_date + timedelta(days=30)).strftime("%Y-%m-%d")  # Add 30 days
 
     # Create new bill entry
+    logger.warning(f"meter reader {meter_reader}")
     new_bill = Bills(
         phone=bill_data.phone,
-        reader_id=meter_reader.id,
+        reader_id=meter_reader["phone"],
+        #reader_id=2134567890,
         image_url=bill_data.image_url,
         reading_value=bill_data.reading,
         reading_date=reading_date,
@@ -167,4 +170,4 @@ def calculate_bill_amount(old_reading,new_reading):
     else:
         rate = 8
 
-    return int(kiloliters * rate)
+    return kiloliters * rate
