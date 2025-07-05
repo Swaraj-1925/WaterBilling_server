@@ -26,10 +26,10 @@ async def meter_ocr(meter_url):
         if not result.read:
             logger.error("Wasn't able to extract reading from image")
         words =[]
-        for block in result.read.blocks:
-            for line in block:
-                for word in line:
-                    words.append(word)
+        for block in result.read['blocks']:
+            for line in block['lines']:
+                logger.info(f"appending line: {line['text']}")
+                words.append(line['text'])
 
         raw_reading = "".join(words)
         filtered_reading = process_string_to_number(raw_reading)
